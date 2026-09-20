@@ -7,12 +7,14 @@ set -euo pipefail
 export DATA_DIR="${DATA_DIR:-/data}"
 mkdir -p "${DATA_DIR}/home" "${DATA_DIR}/config"
 
-export COOKIES_PATH="${COOKIES_PATH:-${DATA_DIR}/cookies.json}"
-export HOME="${HOME:-${DATA_DIR}/home}"
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${DATA_DIR}/config}"
+# Override the upstream image defaults so all session state that should survive
+# redeploys lives on the mounted persistent disk.
+export COOKIES_PATH="${DATA_DIR}/cookies.json"
+export HOME="${DATA_DIR}/home"
+export XDG_CONFIG_HOME="${DATA_DIR}/config"
 
 if [[ -z "${UPSTREAM_AUTH_TOKEN:-}" ]]; then
-  UPSTREAM_AUTH_TOKEN="$(head -c 64 /dev/urandom | base64 | tr -dc 'A-Za-z0-9' | head -c 48)"
+  UPSTREAM_AUTH_TOKEN="$(od -An -N32 -tx1 /dev/urandom | tr -d ' \n')"
   export UPSTREAM_AUTH_TOKEN
 fi
 
@@ -28,7 +30,6 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-# Give the embedded browser/MCP process a moment to initialize.
 sleep 2
 
 echo "[sol-xiaohongshu] starting OAuth gateway on :${PORT:-8080}"
