@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: sol-xiaohongshu
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: 1c-2g
+    healthCheckPath: /health
+    envVars:
+      - key: OWNER_PASSWORD
+        sync: false
+      - key: OAUTH_SIGNING_SECRET
+        sync: false
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: DATA_DIR
+        value: /data
+      - key: PORT
+        value: "8080"
+      - key: OAUTH_ALLOWED_REDIRECT_HOSTS
+        value: chatgpt.com,openai.com
+    disk:
+      name: xiaohongshu-data
+      mountPath: /data
+      sizeGB: 1
