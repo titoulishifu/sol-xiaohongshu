@@ -1,0 +1,14 @@
+services:
+  sol-xiaohongshu:
+    build: .
+    container_name: sol-xiaohongshu
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+    environment:
+      DATA_DIR: /data
+      PORT: "8080"
