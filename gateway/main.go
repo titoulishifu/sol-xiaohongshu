@@ -20,14 +20,14 @@ import (
 )
 
 type tokenClaims struct {
-	Type         string `json:"typ"`
-	Subject      string `json:"sub,omitempty"`
-	ClientID     string `json:"client_id,omitempty"`
-	RedirectURI  string `json:"redirect_uri,omitempty"`
+	Type          string `json:"typ"`
+	Subject       string `json:"sub,omitempty"`
+	ClientID      string `json:"client_id,omitempty"`
+	RedirectURI   string `json:"redirect_uri,omitempty"`
 	CodeChallenge string `json:"code_challenge,omitempty"`
-	Scope        string `json:"scope,omitempty"`
-	ExpiresAt    int64  `json:"exp"`
-	IssuedAt     int64  `json:"iat"`
+	Scope         string `json:"scope,omitempty"`
+	ExpiresAt     int64  `json:"exp"`
+	IssuedAt      int64  `json:"iat"`
 }
 
 var (
@@ -182,9 +182,9 @@ func privacyHandler(w http.ResponseWriter, r *http.Request) {
 func protectedResourceHandler(w http.ResponseWriter, r *http.Request) {
 	b := baseURL(r)
 	writeJSON(w, http.StatusOK, map[string]any{
-		"resource":              b,
-		"authorization_servers": []string{b},
-		"scopes_supported":      []string{"xhs:read", "xhs:write"},
+		"resource":               b,
+		"authorization_servers":  []string{b},
+		"scopes_supported":       []string{"xhs:read", "xhs:write"},
 		"resource_documentation": b + "/privacy",
 	})
 }
